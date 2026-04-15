@@ -6,6 +6,7 @@ import {useSafeAreaInsets} from 'react-native-safe-area-context';
 import ArrowLeft from '../../assets/icons/arrow-left.svg';
 import Logo from '../../assets/images/logo-kinebot.svg';
 import {styles} from './styles';
+import {colors} from '../../theme';
 
 interface HeaderProps {
   showBack?: boolean;
@@ -18,7 +19,7 @@ export default function Header({showBack = false}: HeaderProps) {
   return (
     <View style={styles.shadow}>
       <LinearGradient
-        colors={['#FFFFFF', '#d9def5']}
+        colors={colors.gradients.header}
         locations={[0.1862, 0.9399]}
         start={{x: 0, y: 1}}
         end={{x: 0, y: 0}}
