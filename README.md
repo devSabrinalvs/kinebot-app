@@ -1,97 +1,107 @@
-This is a new [**React Native**](https://reactnative.dev) project, bootstrapped using [`@react-native-community/cli`](https://github.com/react-native-community/cli).
+# Kinebot — Teste Técnico
 
-# Getting Started
+Aplicativo mobile desenvolvido em React Native CLI como parte do processo seletivo da Kinebot. O app apresenta três telas principais para visualização e análise de relatórios AEP (Análise Ergonômica do Posto).
 
-> **Note**: Make sure you have completed the [Set Up Your Environment](https://reactnative.dev/docs/set-up-your-environment) guide before proceeding.
+---
 
-## Step 1: Start Metro
+## Telas
 
-First, you will need to run **Metro**, the JavaScript build tool for React Native.
+| Home | Lista AEP | Detalhe AEP |
+|------|-----------|-------------|
+| Banner de acesso, upload e navegação por tipo de relatório | FlatList de relatórios com card e data | Informações do posto, gráfico de pizza interativo e ações |
 
-To start the Metro dev server, run the following command from the root of your React Native project:
+---
 
-```sh
-# Using npm
-npm start
+## Como rodar
 
-# OR using Yarn
-yarn start
+### Pré-requisitos
+- Node >= 22.11.0
+- JDK 17
+- Android Studio + emulador ou dispositivo físico via USB
+
+### Instalação
+
+```bash
+npm install
 ```
 
-## Step 2: Build and run your app
+### Primeira execução (build nativo)
 
-With Metro running, open a new terminal window/pane from the root of your React Native project, and use one of the following commands to build and run your Android or iOS app:
-
-### Android
-
-```sh
-# Using npm
+```bash
 npm run android
-
-# OR using Yarn
-yarn android
 ```
 
-### iOS
+### Execuções seguintes
 
-For iOS, remember to install CocoaPods dependencies (this only needs to be run on first clone or after updating native deps).
-
-The first time you create a new project, run the Ruby bundler to install CocoaPods itself:
-
-```sh
-bundle install
+```bash
+npm start
 ```
 
-Then, and every time you update your native dependencies, run:
+> O app abre automaticamente via Fast Refresh — não é necessário rebuildar a cada alteração de JS/TS.
 
-```sh
-bundle exec pod install
+---
+
+## Estrutura do projeto
+
+```
+src/
+├── assets/
+│   ├── icons/          # SVGs exportados do Figma
+│   └── images/         # Logo
+├── components/
+│   ├── Button/         # Botão unificado com variantes de tamanho e estilo
+│   ├── Header/         # Cabeçalho com gradiente e suporte a voltar
+│   ├── InfoRow/        # Linha de label + valor para fichas de dados
+│   ├── PieChart/       # Gráfico de pizza customizado com react-native-svg
+│   └── ReportCard/     # Card de relatório para listas
+├── data/
+│   └── mock.ts         # Dados simulados e tipos TypeScript
+├── navigation/
+│   ├── index.tsx       # Configuração de rotas (Stack + BottomTabs)
+│   └── TabBar/         # Tab bar customizada
+├── screens/
+│   ├── HomeScreen/
+│   ├── AEPListScreen/
+│   └── AEPDetailScreen/
+└── theme/
+    └── index.ts        # Design tokens (cores, tipografia, espaçamento, sombras)
 ```
 
-For more information, please visit [CocoaPods Getting Started guide](https://guides.cocoapods.org/using/getting-started.html).
+Cada componente e tela segue a convenção `NomeDoComponente/index.tsx` + `NomeDoComponente/styles.ts`, mantendo lógica e estilos próximos sem misturá-los no mesmo arquivo.
 
-```sh
-# Using npm
-npm run ios
+---
 
-# OR using Yarn
-yarn ios
-```
+## Decisões técnicas
 
-If everything is set up correctly, you should see your new app running in the Android Emulator, iOS Simulator, or your connected device.
+### React Native CLI
+Utilizado conforme especificado — sem Expo — para controle total sobre dependências nativas.
 
-This is one way to run your app — you can also build it directly from Android Studio or Xcode.
+### Componente `Button` unificado
+Em vez de criar componentes separados para cada variação de botão, foi criado um único `Button` com props:
+- `size: 'sm' | 'lg'` — altura 40px ou 56px
+- `variant: 'outlined' | 'primary'` — borda ou fundo sólido
+- `active: boolean` — estado desabilitado com fundo cinza
+- `Icon?` — ícone SVG opcional
 
-## Step 3: Modify your app
+### Gráfico de pizza sem biblioteca
+O `PieChart` foi implementado do zero com `react-native-svg`, calculando os paths SVG de cada fatia via trigonometria. Isso permite controle total sobre aparência e comportamento — incluindo tooltip em formato de balão com animação de fade-in ao tocar em uma fatia.
 
-Now that you have successfully run the app, let's make changes!
+> A animação usa `Animated` da própria React Native com `useNativeDriver: false`, necessário pois props SVG não são suportadas pelo native driver. Para um projeto em produção, `react-native-reanimated` seria a escolha ideal.
 
-Open `App.tsx` in your text editor of choice and make some changes. When you save, your app will automatically update and reflect these changes — this is powered by [Fast Refresh](https://reactnative.dev/docs/fast-refresh).
+### Design tokens centralizados
+Todas as constantes visuais (cores, tipografia, espaçamentos, radii, sombras) vivem em `src/theme/index.ts`, garantindo consistência e fácil manutenção.
 
-When you want to forcefully reload, for example to reset the state of your app, you can perform a full reload:
+### Separação de estilos
+Estilos vivem em `styles.ts` dentro da pasta do próprio componente — nunca misturados com o JSX — seguindo o padrão `StyleSheet.create`.
 
-- **Android**: Press the <kbd>R</kbd> key twice or select **"Reload"** from the **Dev Menu**, accessed via <kbd>Ctrl</kbd> + <kbd>M</kbd> (Windows/Linux) or <kbd>Cmd ⌘</kbd> + <kbd>M</kbd> (macOS).
-- **iOS**: Press <kbd>R</kbd> in iOS Simulator.
+---
 
-## Congratulations! :tada:
+## Dependências principais
 
-You've successfully run and modified your React Native App. :partying_face:
-
-### Now what?
-
-- If you want to add this new React Native code to an existing application, check out the [Integration guide](https://reactnative.dev/docs/integration-with-existing-apps).
-- If you're curious to learn more about React Native, check out the [docs](https://reactnative.dev/docs/getting-started).
-
-# Troubleshooting
-
-If you're having issues getting the above steps to work, see the [Troubleshooting](https://reactnative.dev/docs/troubleshooting) page.
-
-# Learn More
-
-To learn more about React Native, take a look at the following resources:
-
-- [React Native Website](https://reactnative.dev) - learn more about React Native.
-- [Getting Started](https://reactnative.dev/docs/environment-setup) - an **overview** of React Native and how setup your environment.
-- [Learn the Basics](https://reactnative.dev/docs/getting-started) - a **guided tour** of the React Native **basics**.
-- [Blog](https://reactnative.dev/blog) - read the latest official React Native **Blog** posts.
-- [`@facebook/react-native`](https://github.com/facebook/react-native) - the Open Source; GitHub **repository** for React Native.
+| Pacote | Uso |
+|--------|-----|
+| `@react-navigation/native` + `native-stack` + `bottom-tabs` | Navegação Stack + Tab |
+| `react-native-svg` | Ícones SVG e gráfico de pizza customizado |
+| `react-native-linear-gradient` | Gradiente do header |
+| `react-native-safe-area-context` | Suporte a notch e barra de status translúcida |
+| `react-native-gesture-handler` | Requisito do React Navigation |
