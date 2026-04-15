@@ -86,8 +86,6 @@ Em vez de criar componentes separados para cada variação de botão, foi criado
 ### Gráfico de pizza sem biblioteca
 O `PieChart` foi implementado do zero com `react-native-svg`, calculando os paths SVG de cada fatia via trigonometria. Isso permite controle total sobre aparência e comportamento — incluindo tooltip em formato de balão com animação de fade-in ao tocar em uma fatia.
 
-> A animação usa `Animated` da própria React Native com `useNativeDriver: false`, necessário pois props SVG não são suportadas pelo native driver. Para um projeto em produção, `react-native-reanimated` seria a escolha ideal.
-
 ### Design tokens centralizados
 Todas as constantes visuais (cores, tipografia, espaçamentos, radii, sombras) vivem em `src/theme/index.ts`, garantindo consistência e fácil manutenção.
 
