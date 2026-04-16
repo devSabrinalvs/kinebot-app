@@ -11,7 +11,7 @@ import {styles} from './styles';
 
 const TAB_ICONS = [HomeIcon, FolderIcon, SettingsIcon, ProfileIcon];
 
-export default function TabBar({state, navigation}: BottomTabBarProps) {
+export default function TabBar({state, navigation, insets}: BottomTabBarProps) {
   return (
     <View>
       <LinearGradient
@@ -20,7 +20,7 @@ export default function TabBar({state, navigation}: BottomTabBarProps) {
         end={{x: 0, y: 1}}
         style={styles.shadow}
       />
-      <View style={styles.tabBar}>
+      <View style={[styles.tabBar, {paddingBottom: insets.bottom, height: 64 + insets.bottom}]}>
         {state.routes.map((route, index) => {
           const isFocused = state.index === index;
           const Icon = TAB_ICONS[index];
